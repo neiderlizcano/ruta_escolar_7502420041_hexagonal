@@ -59,15 +59,13 @@ public class Asistente {
         this.estado = estado;
     }
     
-   @Override
+    @Override
     public String toString() {
-        return String.format(
-                "%d - %s %s | Tel: %s | Estado: %s",
-                id != null ? id : 0,
-                nombre,
-                apellido,
-                telefono != null ? telefono : "N/D",
-                estado != null ? estado.name() : "N/D"
-        );
+        return "Asistente{" +
+                "id=" + id +
+                ", nombre='" + nombre + ' ' + apellido + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", estado=" + estado +
+                '}';
     }
 }

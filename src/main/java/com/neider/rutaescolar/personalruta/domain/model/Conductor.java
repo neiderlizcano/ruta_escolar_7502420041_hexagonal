@@ -75,17 +75,15 @@ public class Conductor {
         this.estado = estado;
     }
     
-     @Override
+    @Override
     public String toString() {
-        return String.format(
-                "%d - %s %s | Lic: %s (%s) | Tel: %s | Estado: %s",
-                id != null ? id : 0,
-                nombre,
-                apellido,
-                nroLicencia,
-                categoriaLicencia,
-                telefono != null ? telefono : "N/D",
-                estado != null ? estado.name() : "N/D"
-        );
+        return "Conductor{" +
+                "id=" + id +
+                ", nombre='" + nombre + ' ' + apellido + '\'' +
+                ", nroLicencia='" + nroLicencia + '\'' +
+                ", categoriaLicencia='" + categoriaLicencia + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", estado=" + estado +
+                '}';
     }
 }

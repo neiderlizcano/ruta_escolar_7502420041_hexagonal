@@ -22,11 +22,10 @@ public class MySqlBusRepository implements BusRepository {
 
     private Bus insertar(Bus bus) {
         String sql = "INSERT INTO bus (placa, capacidad, estado) VALUES (?, ?, ?)";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, bus.getPlaca());
-            ps.setInt(2, bus.getCapacidad());
+            ps.setInt(2, bus.getCapacidad()); 
             ps.setString(3, bus.getEstado().name());
 
             ps.executeUpdate();
@@ -45,8 +44,7 @@ public class MySqlBusRepository implements BusRepository {
 
     private Bus actualizar(Bus bus) {
         String sql = "UPDATE bus SET placa = ?, capacidad = ?, estado = ? WHERE id = ?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, bus.getPlaca());
             ps.setInt(2, bus.getCapacidad());
@@ -63,8 +61,7 @@ public class MySqlBusRepository implements BusRepository {
     @Override
     public Optional<Bus> buscarPorId(Integer id) {
         String sql = "SELECT id, placa, capacidad, estado FROM bus WHERE id = ?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
 
@@ -85,9 +82,7 @@ public class MySqlBusRepository implements BusRepository {
     public List<Bus> listarTodos() {
         String sql = "SELECT id, placa, capacidad, estado FROM bus";
         List<Bus> lista = new ArrayList<>();
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 lista.add(mapearBus(rs));
@@ -101,8 +96,7 @@ public class MySqlBusRepository implements BusRepository {
     @Override
     public void eliminarPorId(Integer id) {
         String sql = "DELETE FROM bus WHERE id = ?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -114,7 +108,7 @@ public class MySqlBusRepository implements BusRepository {
     private Bus mapearBus(ResultSet rs) throws SQLException {
         Integer id = rs.getInt("id");
         String placa = rs.getString("placa");
-        Integer capacidad = rs.getInt("capacidad");
+        int capacidad = rs.getInt("capacidad");
         EstadoBus estado = EstadoBus.valueOf(rs.getString("estado"));
 
         return new Bus(id, placa, capacidad, estado);
