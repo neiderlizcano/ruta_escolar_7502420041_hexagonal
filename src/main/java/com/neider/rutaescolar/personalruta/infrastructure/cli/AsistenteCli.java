@@ -36,7 +36,7 @@ public class AsistenteCli {
         Scanner sc = new Scanner(System.in);
         int opcion;
         do {
-            System.out.println("=== GESTION DE ASISTENTES ===");
+            System.out.println("GESTION DE ASISTENTES");
             System.out.println("1. Crear asistente");
             System.out.println("2. Listar asistentes");
             System.out.println("3. Buscar asistente por ID");
@@ -67,7 +67,7 @@ public class AsistenteCli {
     }
 
     private void crear(Scanner sc) {
-        System.out.println("=== Crear asistente ===");
+        System.out.println("Crear asistente");
         System.out.print("Nombres: ");
         String nombres = sc.nextLine();
         System.out.print("Apellidos: ");
@@ -90,7 +90,7 @@ public class AsistenteCli {
     }
 
     private void listar() {
-        System.out.println("=== Listar asistentes ===");
+        System.out.println("Listar asistentes");
         List<Asistente> asistentes = listarAsistentes.ejecutar();
         if (asistentes.isEmpty()) {
             System.out.println("No hay asistentes registrados.");
@@ -109,7 +109,7 @@ public class AsistenteCli {
     }
 
     private void buscar(Scanner sc) {
-        System.out.println("=== Buscar asistente ===");
+        System.out.println("Buscar asistente");
         System.out.print("ID: ");
         Integer id = Integer.parseInt(sc.nextLine());
         Optional<Asistente> opt = buscarAsistentePorId.ejecutar(id);
@@ -126,7 +126,7 @@ public class AsistenteCli {
     }
 
     private void actualizar(Scanner sc) {
-        System.out.println("=== Actualizar asistente ===");
+        System.out.println("Actualizar asistente");
         System.out.print("ID: ");
         Integer id = Integer.parseInt(sc.nextLine());
 

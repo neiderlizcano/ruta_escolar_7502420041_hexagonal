@@ -3,32 +3,28 @@ package com.neider.rutaescolar.personalruta.domain.model;
 public class Asistente {
 
     private Integer id;
-    private String nombres;
-    private String apellidos;
-    private String documento;
+    private String nombre;
+    private String apellido;
     private String telefono;
     private EstadoTrabajador estado;
 
     public Asistente(Integer id,
-                     String nombres,
-                     String apellidos,
-                     String documento,
+                     String nombre,
+                     String apellido,
                      String telefono,
                      EstadoTrabajador estado) {
         this.id = id;
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.documento = documento;
+        this.nombre = nombre;
+        this.apellido = apellido;
         this.telefono = telefono;
         this.estado = estado;
     }
 
     public Asistente(String nombres,
                      String apellidos,
-                     String documento,
                      String telefono,
                      EstadoTrabajador estado) {
-        this(null, nombres, apellidos, documento, telefono, estado);
+        this(null, nombres, apellidos, telefono, estado);
     }
 
     public Integer getId() {
@@ -36,15 +32,11 @@ public class Asistente {
     }
 
     public String getNombres() {
-        return nombres;
+        return nombre;
     }
 
     public String getApellidos() {
-        return apellidos;
-    }
-
-    public String getDocumento() {
-        return documento;
+        return apellido;
     }
 
     public String getTelefono() {
@@ -65,5 +57,17 @@ public class Asistente {
 
     public void setEstado(EstadoTrabajador estado) {
         this.estado = estado;
+    }
+    
+   @Override
+    public String toString() {
+        return String.format(
+                "%d - %s %s | Tel: %s | Estado: %s",
+                id != null ? id : 0,
+                nombre,
+                apellido,
+                telefono != null ? telefono : "N/D",
+                estado != null ? estado.name() : "N/D"
+        );
     }
 }

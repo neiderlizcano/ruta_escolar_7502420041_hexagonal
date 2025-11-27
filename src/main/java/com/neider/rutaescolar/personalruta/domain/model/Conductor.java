@@ -3,56 +3,48 @@ package com.neider.rutaescolar.personalruta.domain.model;
 public class Conductor {
 
     private Integer id;
-    private String nombres;
-    private String apellidos;
-    private String documento;
+    private String nombre;
+    private String apellido;
     private String nroLicencia;
     private String categoriaLicencia;
     private String telefono;
     private EstadoTrabajador estado;
 
     public Conductor(Integer id,
-            String nombres,
-            String apellidos,
-            String documento,
+            String nombre,
+            String apellido,
             String nroLicencia,
             String categoriaLicencia,
             String telefono,
             EstadoTrabajador estado) {
         this.id = id;
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.documento = documento;
+        this.nombre = nombre;
+        this.apellido = apellido;
         this.nroLicencia = nroLicencia;
         this.categoriaLicencia = categoriaLicencia;
         this.telefono = telefono;
         this.estado = estado;
     }
 
-    public Conductor(String nombres,
-            String apellidos,
-            String documento,
+    public Conductor(String nombre,
+            String apellido,
             String nroLicencia,
             String categoriaLicencia,
             String telefono,
             EstadoTrabajador estado) {
-        this(null, nombres, apellidos, documento, nroLicencia, categoriaLicencia, telefono, estado);
+        this(null, nombre, apellido, nroLicencia, categoriaLicencia, telefono, estado);
     }
 
     public Integer getId() {
         return id;
     }
 
-    public String getNombres() {
-        return nombres;
+    public String getNombre() {
+        return nombre;
     }
 
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public String getDocumento() {
-        return documento;
+    public String getApellido() {
+        return apellido;
     }
 
     public String getNroLicencia() {
@@ -81,5 +73,19 @@ public class Conductor {
 
     public void setEstado(EstadoTrabajador estado) {
         this.estado = estado;
+    }
+    
+     @Override
+    public String toString() {
+        return String.format(
+                "%d - %s %s | Lic: %s (%s) | Tel: %s | Estado: %s",
+                id != null ? id : 0,
+                nombre,
+                apellido,
+                nroLicencia,
+                categoriaLicencia,
+                telefono != null ? telefono : "N/D",
+                estado != null ? estado.name() : "N/D"
+        );
     }
 }

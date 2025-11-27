@@ -36,7 +36,7 @@ public class ConductorCli {
         Scanner sc = new Scanner(System.in);
         int opcion;
         do {
-            System.out.println("=== GESTION DE CONDUCTORES ===");
+            System.out.println("GESTION DE CONDUCTORES");
             System.out.println("1. Crear conductor");
             System.out.println("2. Listar conductores");
             System.out.println("3. Buscar conductor por ID");
@@ -74,7 +74,7 @@ public class ConductorCli {
     }
 
     private void crear(Scanner sc) {
-        System.out.println("=== Crear conductor ===");
+        System.out.println("Crear conductor");
         System.out.print("Nombres: ");
         String nombres = sc.nextLine();
         System.out.print("Apellidos: ");
@@ -103,7 +103,7 @@ public class ConductorCli {
     }
 
     private void listar() {
-        System.out.println("=== Listar conductores ===");
+        System.out.println("Listar conductores");
         List<Conductor> conductores = listarConductores.ejecutar();
         if (conductores.isEmpty()) {
             System.out.println("No hay conductores registrados.");
@@ -123,7 +123,7 @@ public class ConductorCli {
     }
 
     private void buscar(Scanner sc) {
-        System.out.println("=== Buscar conductor ===");
+        System.out.println("Buscar conductor");
         System.out.print("ID: ");
         Integer id = Integer.parseInt(sc.nextLine());
         Optional<Conductor> opt = buscarConductorPorId.ejecutar(id);
@@ -140,7 +140,7 @@ public class ConductorCli {
     }
 
     private void actualizar(Scanner sc) {
-        System.out.println("=== Actualizar conductor ===");
+        System.out.println("Actualizar conductor");
         System.out.print("ID: ");
         Integer id = Integer.parseInt(sc.nextLine());
 
