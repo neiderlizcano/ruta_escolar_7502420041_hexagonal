@@ -2,14 +2,15 @@ package com.neider.rutaescolar.personalruta.domain.model;
 
 public class Bus {
 
+    public static final int capacidadMaximaNinos = 10;
     private Integer id;
     private String placa;
-    private Integer capacidad;
+    private int capacidad;
     private EstadoBus estado;
 
     public Bus(Integer id,
                String placa,
-               Integer capacidad,
+               int capacidad,
                EstadoBus estado) {
         this.id = id;
         this.placa = placa;
@@ -18,12 +19,11 @@ public class Bus {
     }
 
     public Bus(String placa,
-               Integer capacidad,
                EstadoBus estado) {
-        this(null, placa, capacidad, estado);
+        this(null, placa, capacidadMaximaNinos, estado);
     }
 
-    public Integer getId() {
+  public Integer getId() {
         return id;
     }
 
@@ -31,7 +31,7 @@ public class Bus {
         return placa;
     }
 
-    public Integer getCapacidad() {
+    public int getCapacidad() {
         return capacidad;
     }
 
@@ -43,11 +43,21 @@ public class Bus {
         this.id = id;
     }
 
-    public void setCapacidad(Integer capacidad) {
-        this.capacidad = capacidad;
+    public void setPlaca(String placa) {
+        this.placa = placa;
     }
 
     public void setEstado(EstadoBus estado) {
         this.estado = estado;
+    }
+
+    @Override
+    public String toString() {
+        return "Bus{" +
+                "id=" + id +
+                ", placa='" + placa + '\'' +
+                ", capacidad=" + capacidad +
+                ", estado=" + estado +
+                '}';
     }
 }
