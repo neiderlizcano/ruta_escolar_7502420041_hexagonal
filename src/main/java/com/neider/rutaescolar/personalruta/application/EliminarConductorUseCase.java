@@ -10,7 +10,16 @@ public class EliminarConductorUseCase {
         this.conductorRepository = conductorRepository;
     }
 
+    // validaciones: 
+    //1. Que no sea nulo y sea numero positivo
     public void ejecutar(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("El id del conductor no puede ser null.");
+        }
+        if (id <= 0) {
+            throw new IllegalArgumentException("El id del conductor debe ser un número positivo.");
+        }
+
         conductorRepository.eliminarPorId(id);
     }
 }
