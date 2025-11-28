@@ -36,7 +36,7 @@ public class AsistenteCli {
         Scanner sc = new Scanner(System.in);
         int opcion;
         do {
-            System.out.println("GESTION DE ASISTENTES");
+            System.out.println("=== GESTIÓN DE ASISTENTES ===");
             System.out.println("1. Crear asistente");
             System.out.println("2. Listar asistentes");
             System.out.println("3. Buscar asistente por ID");
@@ -44,11 +44,16 @@ public class AsistenteCli {
             System.out.println("5. Eliminar asistente");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
+
             String linea = sc.nextLine();
             if (linea.isBlank()) {
                 opcion = -1;
             } else {
-                opcion = Integer.parseInt(linea);
+                try {
+                    opcion = Integer.parseInt(linea.trim());
+                } catch (NumberFormatException e) {
+                    opcion = -1;
+                }
             }
 
             switch (opcion) {
@@ -58,7 +63,7 @@ public class AsistenteCli {
                 case 4 -> actualizar(sc);
                 case 5 -> eliminar(sc);
                 case 0 -> System.out.println("Saliendo del menú de asistentes...");
-                default -> System.out.println("Opción inválida");
+                default -> System.out.println("Opción inválida, intenta de nuevo.");
             }
 
             System.out.println();
@@ -67,30 +72,31 @@ public class AsistenteCli {
     }
 
     private void crear(Scanner sc) {
-        System.out.println("Crear asistente");
-        System.out.print("Nombres: ");
-        String nombres = sc.nextLine();
-        System.out.print("Apellidos: ");
-        String apellidos = sc.nextLine();
-        System.out.print("Documento: ");
-        String documento = sc.nextLine();
+        System.out.println("=== Crear asistente ===");
+        System.out.print("Nombre: ");
+        String nombre = sc.nextLine();
+        System.out.print("Apellido: ");
+        String apellido = sc.nextLine();
         System.out.print("Teléfono: ");
         String telefono = sc.nextLine();
 
-        Asistente nuevo = new Asistente(
-                nombres,
-                apellidos,
-                documento,
-                telefono,
-                EstadoTrabajador.ACTIVO
-        );
+        try {
+            Asistente nuevo = new Asistente(
+                    nombre,
+                    apellido,
+                    telefono,
+                    EstadoTrabajador.ACTIVO
+            );
 
-        Asistente guardado = crearAsistente.ejecutar(nuevo);
-        System.out.println("Asistente creado con ID: " + guardado.getId());
+            Asistente guardado = crearAsistente.ejecutar(nuevo);
+            System.out.println("Asistente creado: " + guardado);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error al crear asistente: " + e.getMessage());
+        }
     }
 
     private void listar() {
-        System.out.println("Listar asistentes");
+        System.out.println("=== Listar asistentes ===");
         List<Asistente> asistentes = listarAsistentes.ejecutar();
         if (asistentes.isEmpty()) {
             System.out.println("No hay asistentes registrados.");
@@ -98,68 +104,86 @@ public class AsistenteCli {
         }
 
         for (Asistente a : asistentes) {
-            System.out.printf("%d - %s %s | Doc: %s | Tel: %s | Estado: %s%n",
-                    a.getId(),
-                    a.getNombres(),
-                    a.getApellidos(),
-                    a.getDocumento(),
-                    a.getTelefono(),
-                    a.getEstado().name());
+            System.out.println(a); 
         }
     }
 
     private void buscar(Scanner sc) {
-        System.out.println("Buscar asistente");
+        System.out.println("=== Buscar asistente ===");
         System.out.print("ID: ");
-        Integer id = Integer.parseInt(sc.nextLine());
+        String linea = sc.nextLine();
+        Integer id;
+        try {
+            id = Integer.parseInt(linea.trim());
+        } catch (NumberFormatException e) {
+            System.out.println("ID inválido.");
+            return;
+        }
+
         Optional<Asistente> opt = buscarAsistentePorId.ejecutar(id);
         opt.ifPresentOrElse(
-                a -> System.out.printf("Encontrado: %d - %s %s | Doc: %s | Tel: %s | Estado: %s%n",
-                        a.getId(),
-                        a.getNombres(),
-                        a.getApellidos(),
-                        a.getDocumento(),
-                        a.getTelefono(),
-                        a.getEstado().name()),
-                () -> System.out.println("Asistente no encontrado")
+                a -> System.out.println("Asistente encontrado: " + a),
+                () -> System.out.println("Asistente no encontrado.")
         );
     }
 
     private void actualizar(Scanner sc) {
-        System.out.println("Actualizar asistente");
+        System.out.println("=== Actualizar asistente ===");
         System.out.print("ID: ");
-        Integer id = Integer.parseInt(sc.nextLine());
+        String linea = sc.nextLine();
+        Integer id;
+        try {
+            id = Integer.parseInt(linea.trim());
+        } catch (NumberFormatException e) {
+            System.out.println("ID inválido.");
+            return;
+        }
 
         Optional<Asistente> opt = buscarAsistentePorId.ejecutar(id);
         if (opt.isEmpty()) {
-            System.out.println("Asistente no encontrado");
+            System.out.println("Asistente no encontrado.");
             return;
         }
 
         Asistente existente = opt.get();
+        System.out.println("Dejar vacío el campo si no quieres cambiarlo.");
 
-        System.out.println("Dejar vacío un campo si no quieres cambiarlo.");
         System.out.print("Nuevo teléfono (actual: " + existente.getTelefono() + "): ");
-        String telefono = sc.nextLine();
-        if (!telefono.isBlank()) {
-            existente.setTelefono(telefono);
-        }
+        String nuevoTelefono = sc.nextLine();
 
         System.out.print("Nuevo estado (ACTIVO/INACTIVO/SUSPENDIDO, actual: " + existente.getEstado() + "): ");
         String estadoStr = sc.nextLine();
-        if (!estadoStr.isBlank()) {
-            existente.setEstado(EstadoTrabajador.valueOf(estadoStr.toUpperCase()));
-        }
 
-        Asistente actualizado = actualizarAsistente.ejecutar(existente);
-        System.out.println("Asistente actualizado. Teléfono: " + actualizado.getTelefono() +
-                ", Estado: " + actualizado.getEstado());
+        try {
+            if (!nuevoTelefono.isBlank()) {
+                existente.actualizarTelefono(nuevoTelefono);
+            }
+
+            if (!estadoStr.isBlank()) {
+                EstadoTrabajador nuevoEstado = EstadoTrabajador.valueOf(estadoStr.trim().toUpperCase());
+                existente.cambiarEstado(nuevoEstado);
+            }
+
+            Asistente actualizado = actualizarAsistente.ejecutar(existente);
+            System.out.println("Asistente actualizado: " + actualizado);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error al actualizar asistente: " + e.getMessage());
+        }
     }
 
     private void eliminar(Scanner sc) {
         System.out.println("=== Eliminar asistente ===");
         System.out.print("ID: ");
-        Integer id = Integer.parseInt(sc.nextLine());
+        String linea = sc.nextLine();
+        Integer id;
+        try {
+            id = Integer.parseInt(linea.trim());
+        } catch (NumberFormatException e) {
+            System.out.println("ID inválido.");
+            return;
+        }
+
         eliminarAsistente.ejecutar(id);
         System.out.println("Asistente eliminado (si existía).");
     }

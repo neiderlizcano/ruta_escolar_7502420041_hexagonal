@@ -36,7 +36,7 @@ public class BusCli {
         Scanner sc = new Scanner(System.in);
         int opcion;
         do {
-            System.out.println("=== GESTION DE BUSES ===");
+            System.out.println("=== GESTIÓN DE BUSES ===");
             System.out.println("1. Crear bus");
             System.out.println("2. Listar buses");
             System.out.println("3. Buscar bus por ID");
@@ -44,11 +44,16 @@ public class BusCli {
             System.out.println("5. Eliminar bus");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
+
             String linea = sc.nextLine();
             if (linea.isBlank()) {
                 opcion = -1;
             } else {
-                opcion = Integer.parseInt(linea);
+                try {
+                    opcion = Integer.parseInt(linea.trim());
+                } catch (NumberFormatException e) {
+                    opcion = -1;
+                }
             }
 
             switch (opcion) {
@@ -58,7 +63,7 @@ public class BusCli {
                 case 4 -> actualizar(sc);
                 case 5 -> eliminar(sc);
                 case 0 -> System.out.println("Saliendo del menú de buses...");
-                default -> System.out.println("Opción inválida");
+                default -> System.out.println("Opción inválida, intenta de nuevo.");
             }
 
             System.out.println();
@@ -70,17 +75,24 @@ public class BusCli {
         System.out.println("=== Crear bus ===");
         System.out.print("Placa: ");
         String placa = sc.nextLine();
-        System.out.print("Capacidad: ");
-        Integer capacidad = Integer.parseInt(sc.nextLine());
 
-        Bus nuevo = new Bus(
-                placa,
-                capacidad,
-                EstadoBus.ACTIVO
-        );
+        System.out.print("Estado (ACTIVO/INACTIVO/SUSPENDIDO, por defecto ACTIVO): ");
+        String estadoStr = sc.nextLine();
 
-        Bus guardado = crearBus.ejecutar(nuevo);
-        System.out.println("Bus creado con ID: " + guardado.getId());
+        try {
+            EstadoBus estado = estadoStr.isBlank()
+                    ? EstadoBus.ACTIVO
+                    : EstadoBus.valueOf(estadoStr.trim().toUpperCase());
+
+            
+            Bus nuevo = new Bus(placa, estado);
+
+            Bus guardado = crearBus.ejecutar(nuevo);
+            System.out.println("Bus creado: " + guardado); 
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error al crear bus: " + e.getMessage());
+        }
     }
 
     private void listar() {
@@ -92,64 +104,87 @@ public class BusCli {
         }
 
         for (Bus b : buses) {
-            System.out.printf("%d - Placa: %s | Capacidad: %d | Estado: %s%n",
-                    b.getId(),
-                    b.getPlaca(),
-                    b.getCapacidad(),
-                    b.getEstado().name());
+            System.out.println(b);
         }
     }
 
     private void buscar(Scanner sc) {
         System.out.println("=== Buscar bus ===");
         System.out.print("ID: ");
-        Integer id = Integer.parseInt(sc.nextLine());
+        String linea = sc.nextLine();
+        Integer id;
+        try {
+            id = Integer.parseInt(linea.trim());
+        } catch (NumberFormatException e) {
+            System.out.println("ID inválido.");
+            return;
+        }
+
         Optional<Bus> opt = buscarBusPorId.ejecutar(id);
         opt.ifPresentOrElse(
-                b -> System.out.printf("Encontrado: %d - Placa: %s | Capacidad: %d | Estado: %s%n",
-                        b.getId(),
-                        b.getPlaca(),
-                        b.getCapacidad(),
-                        b.getEstado().name()),
-                () -> System.out.println("Bus no encontrado")
+                b -> System.out.println("Bus encontrado: " + b),
+                () -> System.out.println("Bus no encontrado.")
         );
     }
 
     private void actualizar(Scanner sc) {
         System.out.println("=== Actualizar bus ===");
         System.out.print("ID: ");
-        Integer id = Integer.parseInt(sc.nextLine());
+        String linea = sc.nextLine();
+        Integer id;
+        try {
+            id = Integer.parseInt(linea.trim());
+        } catch (NumberFormatException e) {
+            System.out.println("ID inválido.");
+            return;
+        }
 
         Optional<Bus> opt = buscarBusPorId.ejecutar(id);
         if (opt.isEmpty()) {
-            System.out.println("Bus no encontrado");
+            System.out.println("Bus no encontrado.");
             return;
         }
 
         Bus existente = opt.get();
-
+        System.out.println("Bus actual: " + existente);
         System.out.println("Dejar vacío un campo si no quieres cambiarlo.");
-        System.out.print("Nueva capacidad (actual: " + existente.getCapacidad() + "): ");
-        String capStr = sc.nextLine();
-        if (!capStr.isBlank()) {
-            existente.setCapacidad(Integer.parseInt(capStr));
-        }
+
+        System.out.print("Nueva placa (actual: " + existente.getPlaca() + "): ");
+        String nuevaPlaca = sc.nextLine();
 
         System.out.print("Nuevo estado (ACTIVO/INACTIVO/SUSPENDIDO, actual: " + existente.getEstado() + "): ");
         String estadoStr = sc.nextLine();
-        if (!estadoStr.isBlank()) {
-            existente.setEstado(EstadoBus.valueOf(estadoStr.toUpperCase()));
-        }
 
-        Bus actualizado = actualizarBus.ejecutar(existente);
-        System.out.println("Bus actualizado. Capacidad: " + actualizado.getCapacidad() +
-                ", Estado: " + actualizado.getEstado());
+        try {
+            if (!nuevaPlaca.isBlank()) {
+                existente.actualizarPlaca(nuevaPlaca);
+            }
+
+            if (!estadoStr.isBlank()) {
+                EstadoBus nuevoEstado = EstadoBus.valueOf(estadoStr.trim().toUpperCase());
+                existente.cambiarEstado(nuevoEstado);
+            }
+
+            Bus actualizado = actualizarBus.ejecutar(existente);
+            System.out.println("Bus actualizado: " + actualizado);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error al actualizar bus: " + e.getMessage());
+        }
     }
 
     private void eliminar(Scanner sc) {
         System.out.println("=== Eliminar bus ===");
         System.out.print("ID: ");
-        Integer id = Integer.parseInt(sc.nextLine());
+        String linea = sc.nextLine();
+        Integer id;
+        try {
+            id = Integer.parseInt(linea.trim());
+        } catch (NumberFormatException e) {
+            System.out.println("ID inválido.");
+            return;
+        }
+
         eliminarBus.ejecutar(id);
         System.out.println("Bus eliminado (si existía).");
     }
