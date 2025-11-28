@@ -20,22 +20,22 @@ public class Asistente {
         this.estado = estado;
     }
 
-    public Asistente(String nombres,
-                     String apellidos,
+    public Asistente(String nombre,
+                     String apellido,
                      String telefono,
                      EstadoTrabajador estado) {
-        this(null, nombres, apellidos, telefono, estado);
+        this(null, nombre, apellido, telefono, estado);
     }
 
     public Integer getId() {
         return id;
     }
 
-    public String getNombres() {
+    public String getNombre() {
         return nombre;
     }
 
-    public String getApellidos() {
+    public String getApellido() {
         return apellido;
     }
 
@@ -51,6 +51,14 @@ public class Asistente {
         this.id = id;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+    
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }

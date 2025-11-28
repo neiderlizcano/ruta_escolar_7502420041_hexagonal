@@ -21,19 +21,17 @@ public class MySqlConductorRepository implements ConductorRepository {
     }
 
     private Conductor insertar(Conductor conductor) {
-        String sql = "INSERT INTO conductor " +
-                "(nombres, apellidos, documento, nro_licencia, categoria_lic, telefono, estado) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        String sql = "INSERT INTO conductor "
+                + "(nombre, apellido, nro_licencia, categoria_lic, telefono, estado) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            ps.setString(1, conductor.getNombres());
-            ps.setString(2, conductor.getApellidos());
-            ps.setString(3, conductor.getDocumento());
-            ps.setString(4, conductor.getNroLicencia());
-            ps.setString(5, conductor.getCategoriaLicencia());
-            ps.setString(6, conductor.getTelefono());
-            ps.setString(7, conductor.getEstado().name());
+            ps.setString(1, conductor.getNombre());
+            ps.setString(2, conductor.getApellido());
+            ps.setString(3, conductor.getNroLicencia());
+            ps.setString(4, conductor.getCategoriaLicencia());
+            ps.setString(5, conductor.getTelefono());
+            ps.setString(6, conductor.getEstado().name());
 
             ps.executeUpdate();
 
@@ -50,21 +48,19 @@ public class MySqlConductorRepository implements ConductorRepository {
     }
 
     private Conductor actualizar(Conductor conductor) {
-        String sql = "UPDATE conductor SET " +
-                "nombres = ?, apellidos = ?, documento = ?, " +
-                "nro_licencia = ?, categoria_lic = ?, telefono = ?, estado = ? " +
-                "WHERE id = ?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "UPDATE conductor SET "
+                + "nombre = ?, apellido = ?, "
+                + "nro_licencia = ?, categoria_lic = ?, telefono = ?, estado = ? "
+                + "WHERE id = ?";
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, conductor.getNombres());
-            ps.setString(2, conductor.getApellidos());
-            ps.setString(3, conductor.getDocumento());
-            ps.setString(4, conductor.getNroLicencia());
-            ps.setString(5, conductor.getCategoriaLicencia());
-            ps.setString(6, conductor.getTelefono());
-            ps.setString(7, conductor.getEstado().name());
-            ps.setInt(8, conductor.getId());
+            ps.setString(1, conductor.getNombre());
+            ps.setString(2, conductor.getApellido());
+            ps.setString(3, conductor.getNroLicencia());
+            ps.setString(4, conductor.getCategoriaLicencia());
+            ps.setString(5, conductor.getTelefono());
+            ps.setString(6, conductor.getEstado().name());
+            ps.setInt(7, conductor.getId());
 
             ps.executeUpdate();
             return conductor;
@@ -75,11 +71,10 @@ public class MySqlConductorRepository implements ConductorRepository {
 
     @Override
     public Optional<Conductor> buscarPorId(Integer id) {
-        String sql = "SELECT id, nombres, apellidos, documento, " +
-                "nro_licencia, categoria_lic, telefono, estado " +
-                "FROM conductor WHERE id = ?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "SELECT id, nombre, apellido, "
+                + "nro_licencia, categoria_lic, telefono, estado "
+                + "FROM conductor WHERE id = ?";
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
 
@@ -98,12 +93,10 @@ public class MySqlConductorRepository implements ConductorRepository {
 
     @Override
     public List<Conductor> listarTodos() {
-        String sql = "SELECT id, nombres, apellidos, documento, " +
-                "nro_licencia, categoria_lic, telefono, estado FROM conductor";
+        String sql = "SELECT id, nombre, apellido, "
+                + "nro_licencia, categoria_lic, telefono, estado FROM conductor";
         List<Conductor> lista = new ArrayList<>();
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 lista.add(mapearConductor(rs));
@@ -117,8 +110,7 @@ public class MySqlConductorRepository implements ConductorRepository {
     @Override
     public void eliminarPorId(Integer id) {
         String sql = "DELETE FROM conductor WHERE id = ?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -129,15 +121,14 @@ public class MySqlConductorRepository implements ConductorRepository {
 
     private Conductor mapearConductor(ResultSet rs) throws SQLException {
         Integer id = rs.getInt("id");
-        String nombres = rs.getString("nombres");
-        String apellidos = rs.getString("apellidos");
-        String documento = rs.getString("documento");
+        String nombre = rs.getString("nombre");
+        String apellido = rs.getString("apellido");
         String nroLicencia = rs.getString("nro_licencia");
         String categoriaLic = rs.getString("categoria_lic");
         String telefono = rs.getString("telefono");
         EstadoTrabajador estado = EstadoTrabajador.valueOf(rs.getString("estado"));
 
-        return new Conductor(id, nombres, apellidos, documento,
+        return new Conductor(id, nombre, apellido,
                 nroLicencia, categoriaLic, telefono, estado);
     }
 }

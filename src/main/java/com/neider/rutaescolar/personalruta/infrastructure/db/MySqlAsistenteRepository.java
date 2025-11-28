@@ -22,16 +22,15 @@ public class MySqlAsistenteRepository implements AsistenteRepository {
 
     private Asistente insertar(Asistente asistente) {
         String sql = "INSERT INTO asistente " +
-                "(nombres, apellidos, documento, telefono, estado) " +
-                "VALUES (?, ?, ?, ?, ?)";
+                "(nombre, apellido, telefono, estado) " +
+                "VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            ps.setString(1, asistente.getNombres());
-            ps.setString(2, asistente.getApellidos());
-            ps.setString(3, asistente.getDocumento());
-            ps.setString(4, asistente.getTelefono());
-            ps.setString(5, asistente.getEstado().name());
+            ps.setString(1, asistente.getNombre());
+            ps.setString(2, asistente.getApellido());
+            ps.setString(3, asistente.getTelefono());
+            ps.setString(4, asistente.getEstado().name());
 
             ps.executeUpdate();
 
@@ -49,18 +48,17 @@ public class MySqlAsistenteRepository implements AsistenteRepository {
 
     private Asistente actualizar(Asistente asistente) {
         String sql = "UPDATE asistente SET " +
-                "nombres = ?, apellidos = ?, documento = ?, " +
+                "nombre = ?, apellido = ?, " +
                 "telefono = ?, estado = ? " +
                 "WHERE id = ?";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, asistente.getNombres());
-            ps.setString(2, asistente.getApellidos());
-            ps.setString(3, asistente.getDocumento());
-            ps.setString(4, asistente.getTelefono());
-            ps.setString(5, asistente.getEstado().name());
-            ps.setInt(6, asistente.getId());
+            ps.setString(1, asistente.getNombre());
+            ps.setString(2, asistente.getApellido());
+            ps.setString(3, asistente.getTelefono());
+            ps.setString(4, asistente.getEstado().name());
+            ps.setInt(5, asistente.getId());
 
             ps.executeUpdate();
             return asistente;
@@ -71,7 +69,7 @@ public class MySqlAsistenteRepository implements AsistenteRepository {
 
     @Override
     public Optional<Asistente> buscarPorId(Integer id) {
-        String sql = "SELECT id, nombres, apellidos, documento, telefono, estado " +
+        String sql = "SELECT id, nombre, apellido, telefono, estado " +
                 "FROM asistente WHERE id = ?";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -93,7 +91,7 @@ public class MySqlAsistenteRepository implements AsistenteRepository {
 
     @Override
     public List<Asistente> listarTodos() {
-        String sql = "SELECT id, nombres, apellidos, documento, telefono, estado FROM asistente";
+        String sql = "SELECT id, nombre, apellido, telefono, estado FROM asistente";
         List<Asistente> lista = new ArrayList<>();
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -123,12 +121,11 @@ public class MySqlAsistenteRepository implements AsistenteRepository {
 
     private Asistente mapearAsistente(ResultSet rs) throws SQLException {
         Integer id = rs.getInt("id");
-        String nombres = rs.getString("nombres");
-        String apellidos = rs.getString("apellidos");
-        String documento = rs.getString("documento");
+        String nombre = rs.getString("nombre");
+        String apellido = rs.getString("apellido");
         String telefono = rs.getString("telefono");
         EstadoTrabajador estado = EstadoTrabajador.valueOf(rs.getString("estado"));
 
-        return new Asistente(id, nombres, apellidos, documento, telefono, estado);
+        return new Asistente(id, nombre, apellido, telefono, estado);
     }
 }
