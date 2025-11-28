@@ -12,8 +12,17 @@ public class BuscarBusPorIdUseCase {
     public BuscarBusPorIdUseCase(BusRepository busRepository) {
         this.busRepository = busRepository;
     }
+// validaciones: 
+    //1. Que no sea nulo y numero positivo
 
     public Optional<Bus> ejecutar(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("El id del bus no puede ser null.");
+        }
+        if (id <= 0) {
+            throw new IllegalArgumentException("El id del bus debe ser un número positivo.");
+        }
+
         return busRepository.buscarPorId(id);
     }
 }

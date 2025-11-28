@@ -9,8 +9,17 @@ public class EliminarBusUseCase {
     public EliminarBusUseCase(BusRepository busRepository) {
         this.busRepository = busRepository;
     }
+// validaciones: 
+    //1. Que no sea nulo y numero positivo
 
     public void ejecutar(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("El id del bus no puede ser null.");
+        }
+        if (id <= 0) {
+            throw new IllegalArgumentException("El id del bus debe ser un número positivo.");
+        }
+
         busRepository.eliminarPorId(id);
     }
 }
