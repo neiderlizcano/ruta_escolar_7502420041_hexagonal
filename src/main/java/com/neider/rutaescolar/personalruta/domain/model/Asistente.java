@@ -111,15 +111,13 @@ public class Asistente {
 
     @Override
     public String toString() {
-        String idTexto = (id != null) ? id.toString() : "NUEVO";
-        String estadoTexto = (estado != null) ? estado.name() : "N/D";
-        return String.format(
-                "%s - %s %s | Tel: %s | Estado: %s",
-                idTexto,
-                nombre,
-                apellido,
-                telefono,
-                estadoTexto
-        );
+        return "Asistente{"
+                + "id=" + id
+                + ", nombre='" + nombre + '\''
+                + ", apellido='" + apellido + '\''
+                + ", telefono='" + telefono + '\''
+                + ", estado=" + estado
+                + '}';
     }
+
 }

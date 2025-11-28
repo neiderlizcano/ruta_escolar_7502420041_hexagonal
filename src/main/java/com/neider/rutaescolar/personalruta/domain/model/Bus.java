@@ -97,14 +97,12 @@ public class Bus {
 
     @Override
     public String toString() {
-        String idTexto = (id != null) ? id.toString() : "NUEVO";
-        String estadoTexto = (estado != null) ? estado.name() : "N/D";
-        return String.format(
-                "%s - %s | Capacidad niños: %d | Estado: %s",
-                idTexto,
-                placa,
-                capacidad,
-                estadoTexto
-        );
+        return "Bus{"
+                + "id=" + id
+                + ", placa='" + placa + '\''
+                + ", capacidad=" + capacidad
+                + ", estado=" + estado
+                + '}';
     }
+
 }
