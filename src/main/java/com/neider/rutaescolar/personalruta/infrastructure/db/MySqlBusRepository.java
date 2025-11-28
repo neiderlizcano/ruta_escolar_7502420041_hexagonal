@@ -13,19 +13,22 @@ public class MySqlBusRepository implements BusRepository {
 
     @Override
     public Bus guardar(Bus bus) {
-        if (bus.getId() == null) {
-            return insertar(bus);
-        } else {
-            return actualizar(bus);
+        if (bus == null) {
+            throw new IllegalArgumentException("No se puede guardar un bus nulo.");
         }
+
+        return (bus.getId() == null)
+                ? insertar(bus)
+                : actualizar(bus);
     }
 
     private Bus insertar(Bus bus) {
         String sql = "INSERT INTO bus (placa, capacidad, estado) VALUES (?, ?, ?)";
-        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, bus.getPlaca());
-            ps.setInt(2, bus.getCapacidad()); 
+            ps.setInt(2, bus.getCapacidad());
             ps.setString(3, bus.getEstado().name());
 
             ps.executeUpdate();
@@ -38,25 +41,24 @@ public class MySqlBusRepository implements BusRepository {
 
             return bus;
         } catch (SQLException e) {
-            throw new RuntimeException("Error al insertar bus", e);
+            throw new RuntimeException("Error al insertar bus con placa " + bus.getPlaca(), e);
         }
     }
-
     private Bus actualizar(Bus bus) {
-        String sql = "UPDATE bus SET placa = ?, capacidad = ?, estado = ? WHERE id = ?";
+        String sql = "UPDATE bus SET placa = ?, estado = ? WHERE id = ?";
         try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, bus.getPlaca());
-            ps.setInt(2, bus.getCapacidad());
-            ps.setString(3, bus.getEstado().name());
-            ps.setInt(4, bus.getId());
+            ps.setString(2, bus.getEstado().name());
+            ps.setInt(3, bus.getId());
 
             ps.executeUpdate();
             return bus;
         } catch (SQLException e) {
-            throw new RuntimeException("Error al actualizar bus", e);
+            throw new RuntimeException("Error al actualizar bus con id " + bus.getId(), e);
         }
     }
+
 
     @Override
     public Optional<Bus> buscarPorId(Integer id) {
@@ -74,7 +76,7 @@ public class MySqlBusRepository implements BusRepository {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error al buscar bus por id", e);
+            throw new RuntimeException("Error al buscar bus por id " + id, e);
         }
     }
 
@@ -82,7 +84,9 @@ public class MySqlBusRepository implements BusRepository {
     public List<Bus> listarTodos() {
         String sql = "SELECT id, placa, capacidad, estado FROM bus";
         List<Bus> lista = new ArrayList<>();
-        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 lista.add(mapearBus(rs));
@@ -96,21 +100,22 @@ public class MySqlBusRepository implements BusRepository {
     @Override
     public void eliminarPorId(Integer id) {
         String sql = "DELETE FROM bus WHERE id = ?";
-        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error al eliminar bus", e);
+            throw new RuntimeException("Error al eliminar bus con id " + id, e);
         }
     }
 
-    private Bus mapearBus(ResultSet rs) throws SQLException {
-        Integer id = rs.getInt("id");
-        String placa = rs.getString("placa");
-        int capacidad = rs.getInt("capacidad");
-        EstadoBus estado = EstadoBus.valueOf(rs.getString("estado"));
+private Bus mapearBus(ResultSet rs) throws SQLException {
+    Integer id = rs.getInt("id");
+    String placa = rs.getString("placa");
+    String estadoDb = rs.getString("estado");
+    EstadoBus estado = EstadoBus.valueOf(estadoDb);
 
-        return new Bus(id, placa, capacidad, estado);
-    }
+        return new Bus(id, placa, estado);
+}
 }

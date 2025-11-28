@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DatabaseConfig {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/ruta_escolar_hex?serverTimezone=UTC";
+    private static final String URL = "jdbc:mysql://localhost:3306/ruta_escolar_act_und4?serverTimezone=UTC";
     private static final String USER = "root";
     private static final String PASSWORD = "123456789";
 
