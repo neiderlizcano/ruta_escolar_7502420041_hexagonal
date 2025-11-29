@@ -2,14 +2,19 @@ package com.neider.rutaescolar.personalruta.infraestructure.gui;
 
 import com.neider.rutaescolar.personalruta.application.ActualizarAsistenteUseCase;
 import com.neider.rutaescolar.personalruta.application.ActualizarBusUseCase;
+import com.neider.rutaescolar.personalruta.application.ActualizarConductorUseCase;
 import com.neider.rutaescolar.personalruta.application.BuscarAsistentePorIdUseCase;
 import com.neider.rutaescolar.personalruta.application.BuscarBusPorIdUseCase;
+import com.neider.rutaescolar.personalruta.application.BuscarConductorPorIdUseCase;
 import com.neider.rutaescolar.personalruta.application.CrearAsistenteUseCase;
 import com.neider.rutaescolar.personalruta.application.CrearBusUseCase;
+import com.neider.rutaescolar.personalruta.application.CrearConductorUseCase;
 import com.neider.rutaescolar.personalruta.application.EliminarAsistenteUseCase;
 import com.neider.rutaescolar.personalruta.application.EliminarBusUseCase;
+import com.neider.rutaescolar.personalruta.application.EliminarConductorUseCase;
 import com.neider.rutaescolar.personalruta.application.ListarAsistentesUseCase;
 import com.neider.rutaescolar.personalruta.application.ListarBusesUseCase;
+import com.neider.rutaescolar.personalruta.application.ListarConductoresUseCase;
 import com.neider.rutaescolar.personalruta.domain.ports.BusRepository;
 import com.neider.rutaescolar.personalruta.infraestructure.db.DatabaseConfig;
 import com.neider.rutaescolar.personalruta.infraestructure.db.MySqlBusRepository;
@@ -19,9 +24,15 @@ import com.neider.rutaescolar.personalruta.infraestructure.gui.Bus.CrearBus;
 import com.neider.rutaescolar.personalruta.infraestructure.gui.Bus.EliminarYBuscarBus;
 import com.neider.rutaescolar.personalruta.infraestructure.gui.Bus.ListarBuses;
 import com.neider.rutaescolar.personalruta.domain.ports.AsistenteRepository;
+import com.neider.rutaescolar.personalruta.domain.ports.ConductorRepository;
 import com.neider.rutaescolar.personalruta.infraestructure.db.MySqlAsistenteRepository;
+import com.neider.rutaescolar.personalruta.infraestructure.db.MySqlConductorRepository;
 import com.neider.rutaescolar.personalruta.infraestructure.gui.Asistente.CrearAsistente;
 import com.neider.rutaescolar.personalruta.infraestructure.gui.Asistente.ListarAsistente;
+import com.neider.rutaescolar.personalruta.infraestructure.gui.Conductor.ActualizarConductor;
+import com.neider.rutaescolar.personalruta.infraestructure.gui.Conductor.CrearConductor;
+import com.neider.rutaescolar.personalruta.infraestructure.gui.Conductor.EliminarYBuscarConductor;
+import com.neider.rutaescolar.personalruta.infraestructure.gui.Conductor.ListarConductores;
 
 import java.util.logging.Logger;
 import javax.swing.JPanel;
@@ -331,23 +342,50 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void ActualizarConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarConductorActionPerformed
 
-    BusRepository busRepository = new MySqlBusRepository();
-    ActualizarBusUseCase useCase = new ActualizarBusUseCase(busRepository);
+        ConductorRepository conductorRepository = new MySqlConductorRepository();
+        ActualizarConductorUseCase useCase = new ActualizarConductorUseCase(conductorRepository);
 
-    ActualizarBus panel = new ActualizarBus(useCase);
-    mostrarPanel(panel);
+        ActualizarConductor panel = new ActualizarConductor(useCase);
+        mostrarPanel(panel);
     }//GEN-LAST:event_ActualizarConductorActionPerformed
 
     private void CrearConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearConductorActionPerformed
-        // TODO add your handling code here:
+        ConductorRepository conductorRepository = new MySqlConductorRepository();
+        CrearConductorUseCase crearUC = new CrearConductorUseCase(conductorRepository);
+
+        CrearConductor panel = new CrearConductor(crearUC);
+        mostrarPanel(panel);
     }//GEN-LAST:event_CrearConductorActionPerformed
 
     private void EliminarConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarConductorActionPerformed
-        // TODO add your handling code here:
+        ConductorRepository conductorRepository = new MySqlConductorRepository();
+
+        BuscarConductorPorIdUseCase buscarUC
+                = new BuscarConductorPorIdUseCase(conductorRepository);
+        EliminarConductorUseCase eliminarUC
+                = new EliminarConductorUseCase(conductorRepository);
+        ActualizarConductorUseCase actualizarUC
+                = new ActualizarConductorUseCase(conductorRepository);
+
+        EliminarYBuscarConductor panel
+                = new EliminarYBuscarConductor(buscarUC, eliminarUC, actualizarUC);
+
+        mostrarPanel(panel);
     }//GEN-LAST:event_EliminarConductorActionPerformed
 
     private void ListarConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListarConductorActionPerformed
-        // TODO add your handling code here:
+          ConductorRepository conductorRepository = new MySqlConductorRepository();
+
+        ListarConductoresUseCase listarUC
+                = new ListarConductoresUseCase(conductorRepository);
+
+        BuscarConductorPorIdUseCase buscarUC
+                = new BuscarConductorPorIdUseCase(conductorRepository);
+
+        ListarConductores panel
+                = new ListarConductores(listarUC, buscarUC);
+
+        mostrarPanel(panel);
     }//GEN-LAST:event_ListarConductorActionPerformed
 
     /**
