@@ -9,20 +9,24 @@ import static org.junit.jupiter.api.Assertions.*;
 class ActualizarBusUseCaseTest {
 
     @Test
-    void actualizarBusDebeCambiarCapacidadYEstado() {
+    void actualizarBusDebeCambiarEstado() {
         InMemoryBusRepository repo = new InMemoryBusRepository();
 
-        Bus original = new Bus("DDD333", 40, EstadoBus.ACTIVO);
+        Bus original = new Bus("DDD333", EstadoBus.ACTIVO);
         original = repo.guardar(original);
 
         ActualizarBusUseCase useCase = new ActualizarBusUseCase(repo);
 
-        original.setCapacidad(60);
-        original.setEstado(EstadoBus.SUSPENDIDO);
+        Bus modificado = new Bus(
+                original.getId(), // mismo id
+                original.getPlaca(), // misma placa
+                EstadoBus.SUSPENDIDO // nuevo estado
+        );
 
-        Bus actualizado = useCase.ejecutar(original);
+        Bus actualizado = useCase.ejecutar(modificado);
 
-        assertEquals(60, actualizado.getCapacidad());
         assertEquals(EstadoBus.SUSPENDIDO, actualizado.getEstado());
+        assertEquals(original.getId(), actualizado.getId());
+        assertEquals(original.getPlaca(), actualizado.getPlaca());
     }
 }

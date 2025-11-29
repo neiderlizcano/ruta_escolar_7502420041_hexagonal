@@ -13,12 +13,15 @@ class CrearBusUseCaseTest {
         InMemoryBusRepository repo = new InMemoryBusRepository();
         CrearBusUseCase useCase = new CrearBusUseCase(repo);
 
-        Bus nuevo = new Bus("AAA123", 40, EstadoBus.ACTIVO);
+        Bus nuevo = new Bus("AAA123", EstadoBus.ACTIVO);
 
         Bus guardado = useCase.ejecutar(nuevo);
 
-        assertNotNull(guardado.getId());
-        assertEquals("AAA123", guardado.getPlaca());
-        assertEquals(1, repo.listarTodos().size());
+        assertNotNull(guardado.getId(), "El id no debería ser nulo después de guardar");
+        assertEquals("AAA123", guardado.getPlaca());          // si la placa se pasa a mayúscula, sigue siendo AAA123
+        assertEquals(Bus.CapacidadMaxima, guardado.getCapacidad(),
+                "La capacidad debe ser la capacidad máxima definida en el dominio");
+        assertEquals(1, repo.listarTodos().size(),
+                "Debe haber exactamente un bus en el repositorio");
     }
 }

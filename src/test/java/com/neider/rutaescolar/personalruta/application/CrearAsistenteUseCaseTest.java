@@ -16,15 +16,16 @@ class CrearAsistenteUseCaseTest {
         Asistente nuevo = new Asistente(
                 "Maria",
                 "Lopez",
-                "3001",
-                "3005555555",
+                "3005555555",         
                 EstadoTrabajador.ACTIVO
         );
 
         Asistente guardado = useCase.ejecutar(nuevo);
 
         assertNotNull(guardado.getId(), "El id no debería ser nulo después de guardar");
-        assertEquals("Maria", guardado.getNombres());
-        assertEquals(1, repo.listarTodos().size(), "Debe haber exactamente un asistente en el repositorio");
+        // Si en Asistente también conviertes a mayúsculas:
+        assertEquals("MARIA", guardado.getNombre());
+        assertEquals(1, repo.listarTodos().size(),
+                "Debe haber exactamente un asistente en el repositorio");
     }
 }

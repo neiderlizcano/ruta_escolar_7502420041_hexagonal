@@ -1,4 +1,4 @@
-package com.neider.rutaescolar.personalruta.infrastructure_;
+/*package com.neider.rutaescolar.personalruta.infrastructure_;
 
 import com.neider.rutaescolar.personalruta.application.ActualizarAsistenteUseCase;
 import com.neider.rutaescolar.personalruta.application.BuscarAsistentePorIdUseCase;
@@ -32,3 +32,4 @@ public class MainAsistente {
         cli.mostrarMenu();
     }
 }
+*/

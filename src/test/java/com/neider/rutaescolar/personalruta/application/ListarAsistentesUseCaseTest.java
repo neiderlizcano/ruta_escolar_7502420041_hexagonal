@@ -14,8 +14,8 @@ class ListarAsistentesUseCaseTest {
     void listarAsistentesDebeRetornarTodosLosGuardados() {
         InMemoryAsistenteRepository repo = new InMemoryAsistenteRepository();
 
-        repo.guardar(new Asistente("Laura", "Perez", "4001", "3001111111", EstadoTrabajador.ACTIVO));
-        repo.guardar(new Asistente("Miguel", "Diaz", "4002", "3002222222", EstadoTrabajador.SUSPENDIDO));
+        repo.guardar(new Asistente("Laura", "Perez", "3001111111", EstadoTrabajador.ACTIVO));
+        repo.guardar(new Asistente("Miguel", "Diaz", "3002222222", EstadoTrabajador.SUSPENDIDO));
 
         ListarAsistentesUseCase useCase = new ListarAsistentesUseCase(repo);
 

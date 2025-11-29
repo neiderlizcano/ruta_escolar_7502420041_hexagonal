@@ -1,4 +1,5 @@
 /*
+
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
 
@@ -10,3 +11,4 @@ public class Ruta_escolar_v2 {
         System.out.println("Hello World!");
     }
 }
+

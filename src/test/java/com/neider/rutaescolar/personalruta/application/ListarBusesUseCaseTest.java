@@ -14,13 +14,22 @@ class ListarBusesUseCaseTest {
     void listarBusesDebeRetornarTodosLosGuardados() {
         InMemoryBusRepository repo = new InMemoryBusRepository();
 
-        repo.guardar(new Bus("BBB111", 30, EstadoBus.ACTIVO));
-        repo.guardar(new Bus("CCC222", 50, EstadoBus.INACTIVO));
+        repo.guardar(new Bus("BBB111", EstadoBus.ACTIVO));
+        repo.guardar(new Bus("CCC222", EstadoBus.INACTIVO));
 
         ListarBusesUseCase useCase = new ListarBusesUseCase(repo);
 
         List<Bus> lista = useCase.ejecutar();
 
-        assertEquals(2, lista.size());
+        assertEquals(2, lista.size(), "Deben listarse los dos buses insertados");
+
+        assertTrue(
+                lista.stream().anyMatch(b -> b.getPlaca().equals("BBB111")),
+                "Debe existir el bus BBB111"
+        );
+        assertTrue(
+                lista.stream().anyMatch(b -> b.getPlaca().equals("CCC222")),
+                "Debe existir el bus CCC222"
+        );
     }
 }

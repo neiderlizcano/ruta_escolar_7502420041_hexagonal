@@ -12,7 +12,7 @@ public class ProbarConexion {
 
         try (Connection conn = DatabaseConfig.getConnection()) {
             if (conn != null && !conn.isClosed()) {
-                System.out.println("Conexión EXITOSA a ruta_escolar_hex");
+                System.out.println("Conexión EXITOSA a ruta_escolar_act_und4");
             } else {
                 System.out.println("Conexión NO establecida");
             }

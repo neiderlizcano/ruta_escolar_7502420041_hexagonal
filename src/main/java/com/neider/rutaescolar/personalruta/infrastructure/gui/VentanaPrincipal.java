@@ -4,12 +4,12 @@ import com.neider.rutaescolar.personalruta.infrastructure.gui.Bus.ActualizarBus;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
-public class RutaEscolar extends javax.swing.JFrame {
+public class VentanaPrincipal extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger
-            = java.util.logging.Logger.getLogger(RutaEscolar.class.getName());
+            = java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName());
 
-    public RutaEscolar() {
+    public VentanaPrincipal() {
         initComponents();
         jPanel1.setLayout(new BorderLayout());
     }
@@ -188,7 +188,7 @@ public class RutaEscolar extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new RutaEscolar().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new VentanaPrincipal().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

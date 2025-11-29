@@ -15,17 +15,19 @@ class ActualizarConductorUseCaseTest {
         InMemoryConductorRepository repo = new InMemoryConductorRepository();
         ActualizarConductorUseCase useCase = new ActualizarConductorUseCase(repo);
 
+        // id = null (primer parámetro)
         Conductor sinId = new Conductor(
+                null,
                 "Carlos",
                 "Perez",
-                "999",
                 "LIC999",
                 "C1",
                 "3010000000",
                 EstadoTrabajador.ACTIVO
         );
 
-        assertThrows(IllegalArgumentException.class, () -> useCase.ejecutar(sinId),
+        assertThrows(IllegalArgumentException.class,
+                () -> useCase.ejecutar(sinId),
                 "Debe lanzar IllegalArgumentException si el id es null");
     }
 
@@ -34,18 +36,19 @@ class ActualizarConductorUseCaseTest {
         InMemoryConductorRepository repo = new InMemoryConductorRepository();
         ActualizarConductorUseCase useCase = new ActualizarConductorUseCase(repo);
 
+        // id inexistente en el repositorio
         Conductor conIdInexistente = new Conductor(
+                99,                     // id que NO existe en el repo
                 "Ana",
                 "Lopez",
-                "888",
                 "LIC888",
                 "B1",
                 "3020000000",
                 EstadoTrabajador.ACTIVO
         );
-        conIdInexistente.setId(99);
 
-        assertThrows(NoSuchElementException.class, () -> useCase.ejecutar(conIdInexistente),
+        assertThrows(NoSuchElementException.class,
+                () -> useCase.ejecutar(conIdInexistente),
                 "Debe lanzar NoSuchElementException si el conductor no existe");
     }
 
@@ -55,10 +58,10 @@ class ActualizarConductorUseCaseTest {
         CrearConductorUseCase crear = new CrearConductorUseCase(repo);
         ActualizarConductorUseCase actualizar = new ActualizarConductorUseCase(repo);
 
+        // Crear conductor SIN id (lo asigna el repo)
         Conductor original = new Conductor(
                 "Luis",
                 "Gomez",
-                "777",
                 "LIC777",
                 "C3",
                 "3000000000",
@@ -67,8 +70,9 @@ class ActualizarConductorUseCaseTest {
 
         Conductor creado = crear.ejecutar(original);
 
-        creado.setTelefono("3111111111");
-        creado.setEstado(EstadoTrabajador.SUSPENDIDO);
+        // Usamos los métodos de dominio
+        creado.actualizarTelefono("3111111111");
+        creado.cambiarEstado(EstadoTrabajador.SUSPENDIDO);
 
         Conductor actualizado = actualizar.ejecutar(creado);
 

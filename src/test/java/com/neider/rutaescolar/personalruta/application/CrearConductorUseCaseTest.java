@@ -16,17 +16,17 @@ class CrearConductorUseCaseTest {
         Conductor nuevo = new Conductor(
                 "Neider",
                 "Lizcano",
-                "123456",
-                "LIC123",
-                "C2",
-                "3001234567",
+                "LIC123",         
+                "C2",             
+                "3001234567",     
                 EstadoTrabajador.ACTIVO
         );
 
         Conductor resultado = useCase.ejecutar(nuevo);
 
         assertNotNull(resultado.getId(), "El id del conductor debe generarse");
-        assertEquals("Neider", resultado.getNombres());
+        assertEquals("NEIDER", resultado.getNombre());
+        assertEquals("LIZCANO", resultado.getApellido());
         assertEquals(1, repo.listarTodos().size());
     }
 }
