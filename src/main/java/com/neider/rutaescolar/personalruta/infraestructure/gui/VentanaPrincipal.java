@@ -33,6 +33,10 @@ import com.neider.rutaescolar.personalruta.infraestructure.gui.Conductor.Actuali
 import com.neider.rutaescolar.personalruta.infraestructure.gui.Conductor.CrearConductor;
 import com.neider.rutaescolar.personalruta.infraestructure.gui.Conductor.EliminarYBuscarConductor;
 import com.neider.rutaescolar.personalruta.infraestructure.gui.Conductor.ListarConductores;
+import com.neider.rutaescolar.personalruta.infraestructure.gui.reportes.CantidadConductoresPorCategoriaLicencias;
+import com.neider.rutaescolar.personalruta.infraestructure.gui.reportes.CantidadMinibusPorEstado;
+import com.neider.rutaescolar.personalruta.infraestructure.gui.reportes.ConductoresYEstadoActual;
+import com.neider.rutaescolar.personalruta.infraestructure.gui.reportes.Listas;
 
 import java.util.logging.Logger;
 import javax.swing.JPanel;
@@ -49,11 +53,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         
     }
 
-    private void mostrarPanel(JPanel panel) {
-        setContentPane(panel);
-        revalidate();
-        repaint();
-    }
+private void mostrarPanel(JPanel panel) {
+    setContentPane(panel);
+    revalidate();
+    pack();                
+    setLocationRelativeTo(null); 
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -86,6 +92,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         CrearConductor = new javax.swing.JMenuItem();
         EliminarConductor = new javax.swing.JMenuItem();
         ListarConductor = new javax.swing.JMenuItem();
+        Reporte = new javax.swing.JMenu();
+        ListarAsistenteYestado = new javax.swing.JMenuItem();
+        ListarMiniBusYEstado = new javax.swing.JMenuItem();
+        ListarConductoresConEstado = new javax.swing.JMenuItem();
+        MinibusesXEstado = new javax.swing.JMenuItem();
+        CantidadConductoresConLicencia = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu Inicial");
@@ -107,21 +119,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
+                        .addGap(145, 145, 145)
                         .addComponent(Bienvenida, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(92, 92, 92)
                         .addComponent(jLabel1)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(43, 43, 43)
                 .addComponent(Bienvenida, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(44, 44, 44)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
 
         MenuPrincipal.setBackground(new java.awt.Color(255, 255, 0));
@@ -234,6 +246,50 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         MenuPrincipal.add(Conductor);
 
+        Reporte.setText("Reportes");
+
+        ListarAsistenteYestado.setText("Listar los asistentes y su estado actual");
+        ListarAsistenteYestado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ListarAsistenteYestadoActionPerformed(evt);
+            }
+        });
+        Reporte.add(ListarAsistenteYestado);
+
+        ListarMiniBusYEstado.setText("Listar minibuses y su estado actual");
+        ListarMiniBusYEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ListarMiniBusYEstadoActionPerformed(evt);
+            }
+        });
+        Reporte.add(ListarMiniBusYEstado);
+
+        ListarConductoresConEstado.setText("Listar Conductores y su estado actual");
+        ListarConductoresConEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ListarConductoresConEstadoActionPerformed(evt);
+            }
+        });
+        Reporte.add(ListarConductoresConEstado);
+
+        MinibusesXEstado.setText("Cantidad de minibuses por estado");
+        MinibusesXEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MinibusesXEstadoActionPerformed(evt);
+            }
+        });
+        Reporte.add(MinibusesXEstado);
+
+        CantidadConductoresConLicencia.setText("Cantidad de conductores por categoria de licencia");
+        CantidadConductoresConLicencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CantidadConductoresConLicenciaActionPerformed(evt);
+            }
+        });
+        Reporte.add(CantidadConductoresConLicencia);
+
+        MenuPrincipal.add(Reporte);
+
         setJMenuBar(MenuPrincipal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -244,7 +300,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -388,6 +444,83 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         mostrarPanel(panel);
     }//GEN-LAST:event_ListarConductorActionPerformed
 
+    private void ListarMiniBusYEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListarMiniBusYEstadoActionPerformed
+        BusRepository busRepository = new MySqlBusRepository();
+        AsistenteRepository asistenteRepository = new MySqlAsistenteRepository();
+        ConductorRepository conductorRepository = new MySqlConductorRepository();
+
+        ListarBusesUseCase listarBusesUC = new ListarBusesUseCase(busRepository);
+        ListarAsistentesUseCase listarAsistentesUC = new ListarAsistentesUseCase(asistenteRepository);
+        ListarConductoresUseCase listarConductoresUC = new ListarConductoresUseCase(conductorRepository);
+
+        Listas panelReportes = new Listas(
+                listarBusesUC,
+                listarAsistentesUC,
+                listarConductoresUC
+        );
+
+        mostrarPanel(panelReportes);
+    }//GEN-LAST:event_ListarMiniBusYEstadoActionPerformed
+
+    private void ListarConductoresConEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListarConductoresConEstadoActionPerformed
+        BusRepository busRepository = new MySqlBusRepository();
+        AsistenteRepository asistenteRepository = new MySqlAsistenteRepository();
+        ConductorRepository conductorRepository = new MySqlConductorRepository();
+
+        ListarBusesUseCase listarBusesUC = new ListarBusesUseCase(busRepository);
+        ListarAsistentesUseCase listarAsistentesUC = new ListarAsistentesUseCase(asistenteRepository);
+        ListarConductoresUseCase listarConductoresUC = new ListarConductoresUseCase(conductorRepository);
+
+        Listas panelReportes = new Listas(
+                listarBusesUC,
+                listarAsistentesUC,
+                listarConductoresUC
+        );
+
+        mostrarPanel(panelReportes);
+    }//GEN-LAST:event_ListarConductoresConEstadoActionPerformed
+
+    private void ListarAsistenteYestadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListarAsistenteYestadoActionPerformed
+        BusRepository busRepository = new MySqlBusRepository();
+        AsistenteRepository asistenteRepository = new MySqlAsistenteRepository();
+        ConductorRepository conductorRepository = new MySqlConductorRepository();
+
+        ListarBusesUseCase listarBusesUC = new ListarBusesUseCase(busRepository);
+        ListarAsistentesUseCase listarAsistentesUC = new ListarAsistentesUseCase(asistenteRepository);
+        ListarConductoresUseCase listarConductoresUC = new ListarConductoresUseCase(conductorRepository);
+
+        Listas panelReportes = new Listas(
+                listarBusesUC,
+                listarAsistentesUC,
+                listarConductoresUC
+        );
+
+        mostrarPanel(panelReportes);
+    }//GEN-LAST:event_ListarAsistenteYestadoActionPerformed
+
+    private void MinibusesXEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MinibusesXEstadoActionPerformed
+
+        
+                BusRepository busRepository = new MySqlBusRepository();
+        ListarBusesUseCase listarBusesUC = new ListarBusesUseCase(busRepository);
+
+        CantidadMinibusPorEstado panel
+                = new CantidadMinibusPorEstado(listarBusesUC);
+
+        mostrarPanel(panel);
+    }//GEN-LAST:event_MinibusesXEstadoActionPerformed
+
+    private void CantidadConductoresConLicenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CantidadConductoresConLicenciaActionPerformed
+        ConductorRepository conductorRepository = new MySqlConductorRepository();
+        ListarConductoresUseCase listarConductoresUC
+                = new ListarConductoresUseCase(conductorRepository);
+
+        CantidadConductoresPorCategoriaLicencias panelReporte
+                = new CantidadConductoresPorCategoriaLicencias(listarConductoresUC);
+
+        mostrarPanel(panelReporte);
+    }//GEN-LAST:event_CantidadConductoresConLicenciaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -426,6 +559,7 @@ public static void main(String args[]) {
     private javax.swing.JMenu Asistente;
     private javax.swing.JLabel Bienvenida;
     private javax.swing.JMenu Bus;
+    private javax.swing.JMenuItem CantidadConductoresConLicencia;
     private javax.swing.JMenu Conductor;
     private javax.swing.JMenuItem CrearAsistente;
     private javax.swing.JMenuItem CrearBus;
@@ -433,10 +567,15 @@ public static void main(String args[]) {
     private javax.swing.JMenuItem EliminarBus;
     private javax.swing.JMenuItem EliminarConductor;
     private javax.swing.JMenuItem EliminarYBuscarAsistente;
+    private javax.swing.JMenuItem ListarAsistenteYestado;
     private javax.swing.JMenuItem ListarAsistentes;
     private javax.swing.JMenuItem ListarBuses;
     private javax.swing.JMenuItem ListarConductor;
+    private javax.swing.JMenuItem ListarConductoresConEstado;
+    private javax.swing.JMenuItem ListarMiniBusYEstado;
     private javax.swing.JMenuBar MenuPrincipal;
+    private javax.swing.JMenuItem MinibusesXEstado;
+    private javax.swing.JMenu Reporte;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
